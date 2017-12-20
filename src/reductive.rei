@@ -14,7 +14,8 @@ module Store: {
   let nativeDispatch: (t('action, 'state), 'action) => unit;
   let dispatch: (t('action, 'state), 'action) => unit;
   let getState: t('action, 'state) => 'state;
-  let replaceReducer: (t('action, 'state), ('state, 'action) => 'state) => unit;
+  let replaceReducer:
+    (t('action, 'state), ('state, 'action) => 'state) => unit;
 };
 
 module Provider: {
@@ -25,8 +26,8 @@ module Provider: {
     (
       ~name: string=?,
       Store.t('action, 'state),
-      ~component: (~state: 'state, ~dispatch: 'action => unit, array(ReasonReact.reactElement)) =>
-                  ReasonReact.component('a, 'b, 'c),
+      ~render: (~state: 'state, ~dispatch: 'action => unit, unit) =>
+               ReasonReact.reactElement,
       array(ReasonReact.reactElement)
     ) =>
     ReasonReact.component(state('state), ReasonReact.noRetainedProps, action);
@@ -105,4 +106,4 @@ List.map (fun action () => dispatch action) actions;
 Instead - you are free to build the action data type at dispatch time.
 |}
 ]
-let bindActionCreators: (list('a), 'a => 'b) => list((unit => 'b));
+let bindActionCreators: (list('a), 'a => 'b) => list(unit => 'b);
